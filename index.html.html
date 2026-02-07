@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Rose Day 🌹</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffd1dc, #ffeaf1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Falling petals */
+.petal {
+  position: fixed;
+  top: -10vh;
+  animation: fall linear infinite;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Card */
+.card {
+  background: #fff;
+  width: 90%;
+  max-width: 380px;
+  padding: 36px 26px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(255,105,180,.3);
+}
+
+.screen {
+  display: none;
+}
+.screen.active {
+  display: block;
+}
+
+h1 {
+  color: #ff4d88;
+  margin-bottom: 12px;
+}
+
+p {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.name {
+  color: #ff4d88;
+  font-weight: 600;
+}
+
+.btn {
+  background: linear-gradient(135deg, #ff4d88, #ff85a2);
+  border: none;
+  padding: 12px 30px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* Big rose animation */
+.big-rose {
+  font-size: 30px;
+  animation: grow 1.2s ease forwards;
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.final {
+  font-size: 14px;
+  color: #ff4d88;
+  margin-top: 16px;
+  display: none;
+}
+
+/* Music button */
+.music {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 15px rgba(0,0,0,.25);
+  cursor: pointer;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 MUSIC -->
+<audio id="music" loop preload="auto">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music" id="musicBtn">🎵</div>
+
+<!-- SCREEN 1 -->
+<div class="card screen active" id="screen1">
+  <h1>Happy Rose Day 🌹</h1>
+  <p>
+    A little rose for <span class="name">Anshu</span>,<br>
+    to make this day extra special 💕
+  </p>
+  <button class="btn" onclick="nextScreen()">Continue</button>
+</div>
+
+<!-- SCREEN 2 -->
+<div class="card screen" id="screen2">
+  <h1>For <span class="name">Anshu</span> 💖</h1>
+  <p>
+    Every rose reminds me of your smile.<br>
+    Soft, warm, and beautiful 🌸
+  </p>
+  <button class="btn" onclick="sendRose(this)">🌹 Send Rose</button>
+  <div class="final" id="finalText">Rose sent with love 💌</div>
+</div>
+
+<script>
+/* Petals */
+const petals = ["🌸","🌹","🌺"];
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement("div");
+  p.className = "petal";
+  p.innerText = petals[Math.floor(Math.random() * petals.length)];
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.fontSize = 18 + Math.random() * 18 + "px";
+  p.style.animationDuration = 6 + Math.random() * 6 + "s";
+  document.body.appendChild(p);
+}
+
+/* Screens */
+function nextScreen() {
+  document.getElementById("screen1").classList.remove("active");
+  document.getElementById("screen2").classList.add("active");
+}
+
+/* Send rose animation */
+function sendRose(btn) {
+  const rose = document.createElement("div");
+  rose.className = "big-rose";
+  rose.innerText = "🌹";
+  btn.appendChild(rose);
+
+  setTimeout(() => {
+    btn.style.display = "none";
+    document.getElementById("finalText").style.display = "block";
+  }, 1200);
+}
+
+/* Music (DESKTOP + MOBILE SAFE) */
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
+let playing = false;
+
+musicBtn.onclick = () => {
+  if (!playing) {
+    music.play().then(() => {
+      playing = true;
+      musicBtn.innerText = "🔊";
+    }).catch(() => {
+      alert("Tap again to start music 🎧");
+    });
+  } else {
+    music.pause();
+    playing = false;
+    musicBtn.innerText = "🎵";
+  }
+};
+</script>
+
+</body>
+</html>
